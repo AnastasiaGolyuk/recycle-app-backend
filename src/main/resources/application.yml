@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/recycle_app_db?useUnicode=true&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 1234qwertY5678
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    generate-ddl: true
+
+security:
+  jwt:
+    token:
+      header: Authorization
+      secret-key: test
+      expire-length: 6048000
+
+logging:
+  level:
+    org.springframework.web: ERROR
+    root: INFO
