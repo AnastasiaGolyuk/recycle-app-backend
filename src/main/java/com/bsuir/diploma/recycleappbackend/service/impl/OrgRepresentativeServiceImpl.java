@@ -3,9 +3,11 @@ package com.bsuir.diploma.recycleappbackend.service.impl;
 import com.bsuir.diploma.recycleappbackend.exception.EntityNotFoundException;
 import com.bsuir.diploma.recycleappbackend.model.dto.OrgRepresentativeDto;
 import com.bsuir.diploma.recycleappbackend.model.dto.OrgRepresentativePrepareDto;
+import com.bsuir.diploma.recycleappbackend.model.entity.OrgName;
 import com.bsuir.diploma.recycleappbackend.model.entity.OrgRepresentative;
 import com.bsuir.diploma.recycleappbackend.model.entity.User;
 import com.bsuir.diploma.recycleappbackend.model.mapper.OrgRepresentativeMapper;
+import com.bsuir.diploma.recycleappbackend.repository.OrgNameRepository;
 import com.bsuir.diploma.recycleappbackend.repository.OrgRepresentativeRepository;
 import com.bsuir.diploma.recycleappbackend.repository.UserRepository;
 import com.bsuir.diploma.recycleappbackend.service.OrgRepresentativeService;
@@ -25,6 +27,8 @@ public class OrgRepresentativeServiceImpl implements OrgRepresentativeService {
 
     private final OrgRepresentativeRepository orgRepresentativeRepository;
     private final UserRepository userRepository;
+
+    private final OrgNameRepository orgNameRepository;
     private final OrgRepresentativeMapper orgRepresentativeMapper;
 //    private final OrgRepresentativeValidator businessOwnerValidator;
 
@@ -43,6 +47,26 @@ public class OrgRepresentativeServiceImpl implements OrgRepresentativeService {
         return orgRepresentativeRepository.findById(id)
                 .map(orgRepresentativeMapper::toDto)
                 .orElseThrow(() -> new EntityNotFoundException("CLIENT_NOT_FOUND_ERROR"));
+    }
+
+    @Override
+    public OrgRepresentativeDto findOrgRepresentativeByEmail(String email) {
+        User user = userRepository.findUserByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException("USER_NOT_FOUND_ERROR"));
+        return orgRepresentativeRepository.findOrgRepresentativeByUserId(user.getId())
+                .map(orgRepresentativeMapper::toDto)
+                .orElseThrow(() -> new EntityNotFoundException("CLIENT_NOT_FOUND_ERROR"));
+
+    }
+
+    @Override
+    public OrgRepresentativeDto findOrgRepresentativeByOrgName(String orgName) {
+        OrgName orgObj = orgNameRepository.findOrgByName(orgName)
+                .orElseThrow(() -> new EntityNotFoundException("USER_NOT_FOUND_ERROR"));
+        return orgRepresentativeRepository.findOrgRepresentativeByOrgNameId(orgObj.getId())
+                .map(orgRepresentativeMapper::toDto)
+                .orElseThrow(() -> new EntityNotFoundException("CLIENT_NOT_FOUND_ERROR"));
+
     }
 
     @Override
@@ -82,9 +106,11 @@ public class OrgRepresentativeServiceImpl implements OrgRepresentativeService {
 
 
     private OrgRepresentativePrepareDto getOrgRepresentativePrepareDto(OrgRepresentativeDto orgRepresentativeDto) {
-        System.out.println(orgRepresentativeDto.getUserDto().getId());
-        User user = userRepository.findById(orgRepresentativeDto.getUserDto().getId())
+        System.out.println(orgRepresentativeDto.getUser().getId());
+        User user = userRepository.findById(orgRepresentativeDto.getUser().getId())
                 .orElseThrow(() -> new EntityNotFoundException("USER_NOT_FOUND_ERROR"));
-        return new OrgRepresentativePrepareDto(user);
+        OrgName orgName = orgNameRepository.findById(orgRepresentativeDto.getOrgName().getId())
+                .orElseThrow(() -> new EntityNotFoundException("USER_NOT_FOUND_ERROR"));
+        return new OrgRepresentativePrepareDto(user,orgName);
     }
 }

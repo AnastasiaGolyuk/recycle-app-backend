@@ -9,9 +9,14 @@ public interface OrgRepresentativeService {
 
     OrgRepresentativeDto findOrgRepresentativeById(Long id);
 
+    OrgRepresentativeDto findOrgRepresentativeByEmail(String email);
+
+    OrgRepresentativeDto findOrgRepresentativeByOrgName(String orgName);
+
     Page<OrgRepresentativeDto> findAllOrgRepresentatives(Pageable pageable);
 
     Long getOrgRepresentativesCount();
+
 
     OrgRepresentativeDto updateOrgRepresentative(OrgRepresentativeDto orgRepresentativeDto);
 

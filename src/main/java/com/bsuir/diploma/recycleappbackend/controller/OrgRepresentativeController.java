@@ -1,6 +1,8 @@
 package com.bsuir.diploma.recycleappbackend.controller;
 
 import com.bsuir.diploma.recycleappbackend.model.dto.OrgRepresentativeDto;
+import com.bsuir.diploma.recycleappbackend.model.dto.UserDto;
+import com.bsuir.diploma.recycleappbackend.model.entity.OrgRepresentative;
 import com.bsuir.diploma.recycleappbackend.service.OrgRepresentativeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -32,6 +34,16 @@ public class OrgRepresentativeController {
     @GetMapping("/{id}")
     public OrgRepresentativeDto findById(@PathVariable Long id) {
         return orgRepresentativeService.findOrgRepresentativeById(id);
+    }
+
+    @GetMapping("/email/{email}")
+    public OrgRepresentativeDto findOrgRepresentativeByEmail(@PathVariable String email) {
+        return orgRepresentativeService.findOrgRepresentativeByEmail(email);
+    }
+
+    @GetMapping("/org-name/{orgName}")
+    public OrgRepresentativeDto findOrgRepresentativeByOrgName(@PathVariable String orgName) {
+        return orgRepresentativeService.findOrgRepresentativeByOrgName(orgName);
     }
 
     @PatchMapping

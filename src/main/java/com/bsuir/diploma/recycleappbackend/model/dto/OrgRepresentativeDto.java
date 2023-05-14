@@ -1,5 +1,7 @@
 package com.bsuir.diploma.recycleappbackend.model.dto;
 
+import com.bsuir.diploma.recycleappbackend.model.entity.OrgName;
+import com.bsuir.diploma.recycleappbackend.model.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class OrgRepresentativeDto {
     private Long id;
-    private UserDto userDto;
-    private String org_name;
+    private User user;
+    private OrgName orgName;
     private String position;
 }
