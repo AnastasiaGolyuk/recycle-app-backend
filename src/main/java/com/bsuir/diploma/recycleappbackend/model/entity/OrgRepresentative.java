@@ -15,8 +15,9 @@ public class OrgRepresentative {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "org_name")
-    private String org_name;
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "org_name_id", referencedColumnName = "id")
+    private OrgName orgName;
 
     @Column(name = "position")
     private String position;

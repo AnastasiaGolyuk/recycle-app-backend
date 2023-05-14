@@ -35,6 +35,17 @@ public class UserController {
         return userService.findUserById(id);
     }
 
+    @GetMapping("/email/{email}")
+    public UserDto findUserByEmail(@PathVariable String email) {
+        return userService.findUserByEmail(email);
+    }
+
+    @GetMapping("/exists-by-email/{email}")
+    public boolean existsByEmail(@PathVariable String email) {
+        return userService.existsByEmail(email);
+    }
+
+//    @PreAuthorize("hasAuthority('USER_PERMISSION')")
     @PatchMapping
     public UserDto update(@RequestBody UserDto userDto) {
         return userService.updateUser(userDto);

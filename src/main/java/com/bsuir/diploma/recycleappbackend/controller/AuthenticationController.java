@@ -20,7 +20,7 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/signup")
-    public UserDto signup(@Valid @RequestBody UserDto userDto) {
+    public UserDto signup(@RequestBody UserDto userDto) {
         return authenticationService.signup(userDto);
     }
 
