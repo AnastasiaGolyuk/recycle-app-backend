@@ -4,7 +4,7 @@ import com.bsuir.diploma.recycleappbackend.model.dto.RecycleSymbolDto;
 import com.bsuir.diploma.recycleappbackend.model.entity.RecycleSymbol;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = RecycleSymbolTypeMapper.class)
 public interface RecycleSymbolMapper {
 
     RecycleSymbolDto toDto(RecycleSymbol recycleSymbol);

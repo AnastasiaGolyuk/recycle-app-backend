@@ -30,7 +30,6 @@ public class OrgRepresentativeServiceImpl implements OrgRepresentativeService {
 
     private final OrgNameRepository orgNameRepository;
     private final OrgRepresentativeMapper orgRepresentativeMapper;
-//    private final OrgRepresentativeValidator businessOwnerValidator;
 
     @Transactional
     @Override

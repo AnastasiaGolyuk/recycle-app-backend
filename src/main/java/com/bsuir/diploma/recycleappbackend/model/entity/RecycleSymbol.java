@@ -22,5 +22,9 @@ public class RecycleSymbol {
 
     @Column(name = "img_link")
     private String imgLink;
+
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "recycle_symbol_type_id", referencedColumnName = "id")
+    private RecycleSymbolType recycleSymbolType;
 }
 

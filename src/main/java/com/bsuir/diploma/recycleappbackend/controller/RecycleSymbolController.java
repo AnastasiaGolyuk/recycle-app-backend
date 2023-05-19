@@ -26,9 +26,17 @@ public class RecycleSymbolController {
     }
 
 
+//    @GetMapping("/name/{name}")
+//    public RecycleSymbolDto findRecycleSymbolByName(@PathVariable String name) {
+//        return recycleSymbolService.findRecycleSymbolByName(name);
+//    }
+
     @GetMapping("/name/{name}")
-    public RecycleSymbolDto findRecycleSymbolByName(@PathVariable String name) {
-        return recycleSymbolService.findRecycleSymbolByName(name);
+    public List<RecycleSymbolDto> findRecycleSymbolsByTypeName(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                          @RequestParam(name = "size", defaultValue = "10") Integer size,
+                                                               @PathVariable String name) {
+        Page<RecycleSymbolDto> recycleSymbolPage = recycleSymbolService.findRecycleSymbolsByTypeName(name,PageRequest.of(page, size));
+        return new ArrayList<>(recycleSymbolPage.getContent());
     }
 
     @GetMapping("/count")

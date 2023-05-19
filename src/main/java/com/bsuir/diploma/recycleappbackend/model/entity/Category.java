@@ -17,6 +17,12 @@ public class Category {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "recycle_info")
+    private String recycleInfo;
+
     @Column(name = "recyclable")
     private String recyclable;
 

@@ -30,12 +30,10 @@ public class OperationServiceImpl implements OperationService {
 
     private final OrgRepresentativeRepository orgRepresentativeRepository;
     private final OperationMapper operationMapper;
-//    private final OperationValidator operationValidator;
 
     @Transactional
     @Override
     public OperationDto saveOperation(OperationDto operationDto) {
-//        operationValidator.validate(operationDto);
         OperationPrepareDto operationPrepareDto = getOperationPrepareDto(operationDto);
         Operation entity = operationMapper.toEntity(operationDto);
         entity.setUser(operationPrepareDto.getUser());

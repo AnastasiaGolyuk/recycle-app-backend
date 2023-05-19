@@ -2,8 +2,10 @@ package com.bsuir.diploma.recycleappbackend.service.impl;
 
 import com.bsuir.diploma.recycleappbackend.exception.EntityNotFoundException;
 import com.bsuir.diploma.recycleappbackend.model.dto.RecycleSymbolDto;
+import com.bsuir.diploma.recycleappbackend.model.entity.RecycleSymbolType;
 import com.bsuir.diploma.recycleappbackend.model.mapper.RecycleSymbolMapper;
 import com.bsuir.diploma.recycleappbackend.repository.RecycleSymbolRepository;
+import com.bsuir.diploma.recycleappbackend.repository.RecycleSymbolTypeRepository;
 import com.bsuir.diploma.recycleappbackend.service.RecycleSymbolService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,6 +23,8 @@ public class RecycleSymbolServiceImpl implements RecycleSymbolService {
     private final RecycleSymbolRepository recycleSymbolRepository;
     private final RecycleSymbolMapper recycleSymbolMapper;
 
+    private final RecycleSymbolTypeRepository recycleSymbolTypeRepository;
+
 
     @Override
     public RecycleSymbolDto findRecycleSymbolByName(String name) {
@@ -32,6 +36,17 @@ public class RecycleSymbolServiceImpl implements RecycleSymbolService {
     @Override
     public Page<RecycleSymbolDto> findAllRecycleSymbols(Pageable pageable) {
         List<RecycleSymbolDto> recycleSymbolDtoList = recycleSymbolRepository.findAll(pageable)
+                .stream()
+                .map(recycleSymbolMapper::toDto)
+                .collect(Collectors.toList());
+        return new PageImpl<>(recycleSymbolDtoList, pageable, recycleSymbolRepository.count());
+    }
+
+    @Override
+    public Page<RecycleSymbolDto> findRecycleSymbolsByTypeName(String typeName, Pageable pageable) {
+        RecycleSymbolType recycleSymbolType = recycleSymbolTypeRepository.findRecycleSymbolTypeByName(typeName)
+                .orElseThrow(() -> new EntityNotFoundException("USER_NOT_FOUND_ERROR"));
+        List<RecycleSymbolDto> recycleSymbolDtoList = recycleSymbolRepository.findRecycleSymbolsByRecycleSymbolTypeName(recycleSymbolType.getName(),pageable)
                 .stream()
                 .map(recycleSymbolMapper::toDto)
                 .collect(Collectors.toList());

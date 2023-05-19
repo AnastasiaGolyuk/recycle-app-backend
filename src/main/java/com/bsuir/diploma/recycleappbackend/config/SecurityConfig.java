@@ -52,6 +52,7 @@ public class SecurityConfig {
                 .antMatchers("/api/v1/categories/**").permitAll()
                 .antMatchers("/api/v1/users/**").permitAll()
                 .antMatchers("/api/v1/recycle-symbols/**").permitAll()
+                .antMatchers("/api/v1/recycle-symbol-types/**").permitAll()
                 .antMatchers("/api/v1/org-representatives/**").permitAll()
                 .anyRequest()
                 .authenticated()
