@@ -42,11 +42,6 @@ public class OperationController {
         return new ArrayList<>(operationPage.getContent());
     }
 
-//    @GetMapping("/{id}")
-//    public OperationDto findByBusinessOwnerId(@PathVariable Long id) {
-//        return operationService.findOperationByBusinessOwnerId(id);
-//    }
-
     @GetMapping("/users/{id}")
     public List<OperationDto> findAllByUserId(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                           @RequestParam(name = "size", defaultValue = "10") Integer size,
@@ -54,11 +49,6 @@ public class OperationController {
         Page<OperationDto> operationPage = operationService.findAllOperationsByUserId(PageRequest.of(page, size),id);
         return new ArrayList<>(operationPage.getContent());
     }
-
-//    @GetMapping("/{id}")
-//    public OperationDto findByUserId(@PathVariable Long id) {
-//        return operationService.findOperationById(id);
-//    }
 
     @PatchMapping
     public OperationDto update(@RequestBody OperationDto operationDto) {

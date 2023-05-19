@@ -27,5 +27,6 @@ public class Operation {
     @Column(name = "date_time")
     private LocalDateTime dateTime;
 
-    
+    @Column(name = "amount")
+    private String amount;
 }
