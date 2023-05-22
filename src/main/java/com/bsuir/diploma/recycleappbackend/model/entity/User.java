@@ -24,9 +24,6 @@ public class User {
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
-    @Column(name = "username")
-    private String username;
-
     @Column(name = "password")
     private String password;
 

@@ -37,6 +37,7 @@ public class OrgRepresentativeServiceImpl implements OrgRepresentativeService {
         OrgRepresentativePrepareDto orgRepresentativePrepareDto = getOrgRepresentativePrepareDto(orgRepresentativeDto);
         OrgRepresentative entity = orgRepresentativeMapper.toEntity(orgRepresentativeDto);
         entity.setUser(orgRepresentativePrepareDto.getUser());
+        entity.setOrgName(orgRepresentativePrepareDto.getOrgName());
         OrgRepresentative savedOrgRepresentative = orgRepresentativeRepository.save(entity);
         return orgRepresentativeMapper.toDto(savedOrgRepresentative);
     }
@@ -91,6 +92,7 @@ public class OrgRepresentativeServiceImpl implements OrgRepresentativeService {
         OrgRepresentativePrepareDto orgRepresentativePrepareDto = getOrgRepresentativePrepareDto(orgRepresentativeDto);
         OrgRepresentative entity = orgRepresentativeMapper.toEntity(orgRepresentativeDto);
         entity.setUser(orgRepresentativePrepareDto.getUser());
+        entity.setOrgName(orgRepresentativePrepareDto.getOrgName());
         OrgRepresentative updatedOrgRepresentative = orgRepresentativeRepository.save(entity);
         return orgRepresentativeMapper.toDto(updatedOrgRepresentative);
     }

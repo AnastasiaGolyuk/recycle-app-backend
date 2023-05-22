@@ -16,17 +16,23 @@ public class Operation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "business_owner_id", referencedColumnName = "id")
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "org_representative_id", referencedColumnName = "id")
     private OrgRepresentative orgRepresentative;
 
     @Column(name = "date_time")
     private LocalDateTime dateTime;
 
-    @Column(name = "amount")
-    private String amount;
+    @Column(name = "amount_bonuses")
+    private String amountBonuses;
+
+    @Column(name = "type_recyclables")
+    private String typeRecyclables;
+
+    @Column(name = "amount_recyclables")
+    private String amountRecyclables;
 }

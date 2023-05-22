@@ -30,22 +30,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByEmail(String email);
 
     /**
-     * Найти пользователя по имени пользователя.
-     *
-     * @param username имя пользователя
-     * @return Optional, содержащий найденного пользователя
-     */
-    Optional<User> findUserByUsername(String username);
-
-    /**
-     * Проверить существование пользователя по имени пользователя.
-     *
-     * @param username имя пользователя
-     * @return true, если пользователь с указанным именем пользователя существует, иначе false
-     */
-    boolean existsByUsername(String username);
-
-    /**
      * Обновить пароль пользователя по заданному идентификатору.
      *
      * @param id       идентификатор пользователя

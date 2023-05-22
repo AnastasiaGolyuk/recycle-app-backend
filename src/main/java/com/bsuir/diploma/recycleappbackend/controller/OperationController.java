@@ -24,7 +24,7 @@ public class OperationController {
 
     @GetMapping
     public List<OperationDto> findAll(@RequestParam(name = "page", defaultValue = "0") Integer page,
-                                   @RequestParam(name = "size", defaultValue = "10") Integer size) {
+                                      @RequestParam(name = "size", defaultValue = "10") Integer size) {
         Page<OperationDto> operationPage = operationService.findAllOperations(PageRequest.of(page, size));
         return new ArrayList<>(operationPage.getContent());
     }
@@ -34,20 +34,30 @@ public class OperationController {
         return operationService.findOperationById(id);
     }
 
-    @GetMapping("/business-owners/{id}")
-    public List<OperationDto> findAllByBusinessOwnerId(@RequestParam(name = "page", defaultValue = "0") Integer page,
-                                          @RequestParam(name = "size", defaultValue = "10") Integer size,
-                                                       @PathVariable Long id) {
-        Page<OperationDto> operationPage = operationService.findAllOperationsByBusinessOwnerId(PageRequest.of(page, size),id);
+    @GetMapping("/org-representative/{id}")
+    public List<OperationDto> findAllByOrgRepresentativeId(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                           @RequestParam(name = "size", defaultValue = "10") Integer size,
+                                                           @PathVariable Long id) {
+        Page<OperationDto> operationPage = operationService.findAllOperationsByOrgRepresentativeId(PageRequest.of(page, size), id);
         return new ArrayList<>(operationPage.getContent());
     }
 
-    @GetMapping("/users/{id}")
-    public List<OperationDto> findAllByUserId(@RequestParam(name = "page", defaultValue = "0") Integer page,
-                                          @RequestParam(name = "size", defaultValue = "10") Integer size,
-                                              @PathVariable Long id) {
-        Page<OperationDto> operationPage = operationService.findAllOperationsByUserId(PageRequest.of(page, size),id);
+    @GetMapping("/users/{email}")
+    public List<OperationDto> findAllByUserEmail(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                              @RequestParam(name = "size", defaultValue = "10") Integer size,
+                                              @PathVariable String email) {
+        Page<OperationDto> operationPage = operationService.findAllOperationsByUserEmail(PageRequest.of(page, size), email);
         return new ArrayList<>(operationPage.getContent());
+    }
+
+    @GetMapping("/exist-by-users/{id}")
+    public boolean existByUserId(@PathVariable Long id) {
+        return operationService.existsByUserId(id);
+    }
+
+    @GetMapping("/exist-by-org-rep-id/{id}")
+    public boolean existByOrgRepId(@PathVariable Long id) {
+        return operationService.existsByOrgRepresentativeId(id);
     }
 
     @PatchMapping

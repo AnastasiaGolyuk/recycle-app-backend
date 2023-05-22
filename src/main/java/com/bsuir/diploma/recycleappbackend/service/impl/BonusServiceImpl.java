@@ -40,6 +40,11 @@ public class BonusServiceImpl implements BonusService {
     }
 
     @Override
+    public boolean existsByEmail(String email) {
+        return bonusRepository.existsByUserEmail(email);
+    }
+
+    @Override
     public BonusDto findBonusById(Long id) {
         return bonusRepository.findById(id)
                 .map(bonusMapper::toDto)
@@ -76,6 +81,11 @@ public class BonusServiceImpl implements BonusService {
         bonusRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("CLIENT_NOT_FOUND_ERROR"));
         bonusRepository.deleteById(id);
+    }
+
+    @Override
+    public Long getBonusesCount() {
+        return bonusRepository.count();
     }
 
 

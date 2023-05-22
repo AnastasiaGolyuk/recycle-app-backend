@@ -8,6 +8,8 @@ public interface BonusService {
 
     BonusDto saveBonus(BonusDto bonusDto);
 
+    boolean existsByEmail(String email);
+
     BonusDto findBonusById(Long id);
 
     BonusDto findBonusByUserEmail(String email);
@@ -15,4 +17,6 @@ public interface BonusService {
     BonusDto updateBonus(BonusDto bonusDto);
 
     void deleteBonusById(Long id);
+
+    Long getBonusesCount();
 }

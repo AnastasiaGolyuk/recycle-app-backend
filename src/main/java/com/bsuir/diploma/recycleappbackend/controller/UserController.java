@@ -45,7 +45,6 @@ public class UserController {
         return userService.existsByEmail(email);
     }
 
-//    @PreAuthorize("hasAuthority('USER_PERMISSION')")
     @PatchMapping
     public UserDto update(@RequestBody UserDto userDto) {
         return userService.updateUser(userDto);

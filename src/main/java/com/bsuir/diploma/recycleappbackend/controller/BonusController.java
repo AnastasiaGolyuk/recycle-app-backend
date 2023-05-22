@@ -28,6 +28,11 @@ public class BonusController {
         return bonusService.findBonusByUserEmail(email);
     }
 
+    @GetMapping("/exists-by-email/{email}")
+    public boolean existsByEmail(@PathVariable String email) {
+        return bonusService.existsByEmail(email);
+    }
+
     @PatchMapping
     public BonusDto update(@RequestBody BonusDto bonusDto) {
         return bonusService.updateBonus(bonusDto);
@@ -36,5 +41,10 @@ public class BonusController {
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable Long id) {
         bonusService.deleteBonusById(id);
+    }
+
+    @GetMapping("/count")
+    public Long getBonusesCount() {
+        return bonusService.getBonusesCount();
     }
 }

@@ -11,4 +11,6 @@ import java.util.Optional;
 public interface BonusRepository extends JpaRepository<Bonus, Long> {
 
     Optional<Bonus> findBonusByUserId(Long id);
+
+    boolean existsByUserEmail(String email);
 }

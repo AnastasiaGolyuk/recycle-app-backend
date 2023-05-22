@@ -20,8 +20,6 @@ public class UserDto {
 
     private LocalDate birthDate;
 
-    private String username;
-
     private String password;
 
     private String phoneNumber;

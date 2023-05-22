@@ -13,9 +13,9 @@ public interface OperationService {
 //
 //    OperationDto findOperationByBusinessOwnerId(Long id);
 
-    Page<OperationDto> findAllOperationsByUserId(Pageable pageable, Long id);
+    Page<OperationDto> findAllOperationsByUserEmail(Pageable pageable, String email);
 
-    Page<OperationDto> findAllOperationsByBusinessOwnerId(Pageable pageable, Long id);
+    Page<OperationDto> findAllOperationsByOrgRepresentativeId(Pageable pageable, Long id);
 
     Page<OperationDto> findAllOperations(Pageable pageable);
 
@@ -24,4 +24,8 @@ public interface OperationService {
     OperationDto updateOperation(OperationDto operationDto);
 
     void deleteOperationById(Long id);
+
+    boolean existsByUserId(Long id);
+
+    boolean existsByOrgRepresentativeId(Long id);
 }

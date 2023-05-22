@@ -3,8 +3,10 @@ package com.bsuir.diploma.recycleappbackend.service.impl;
 import com.bsuir.diploma.recycleappbackend.exception.EntityNotFoundException;
 import com.bsuir.diploma.recycleappbackend.model.dto.OperationDto;
 import com.bsuir.diploma.recycleappbackend.model.dto.OperationPrepareDto;
+import com.bsuir.diploma.recycleappbackend.model.dto.RecycleSymbolDto;
 import com.bsuir.diploma.recycleappbackend.model.entity.OrgRepresentative;
 import com.bsuir.diploma.recycleappbackend.model.entity.Operation;
+import com.bsuir.diploma.recycleappbackend.model.entity.RecycleSymbolType;
 import com.bsuir.diploma.recycleappbackend.model.entity.User;
 import com.bsuir.diploma.recycleappbackend.model.mapper.OperationMapper;
 import com.bsuir.diploma.recycleappbackend.repository.OrgRepresentativeRepository;
@@ -18,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,8 +37,10 @@ public class OperationServiceImpl implements OperationService {
     @Transactional
     @Override
     public OperationDto saveOperation(OperationDto operationDto) {
+        LocalDateTime localDateTime = LocalDateTime.now();
         OperationPrepareDto operationPrepareDto = getOperationPrepareDto(operationDto);
         Operation entity = operationMapper.toEntity(operationDto);
+        entity.setDateTime(localDateTime);
         entity.setUser(operationPrepareDto.getUser());
         entity.setOrgRepresentative(operationPrepareDto.getOrgRepresentative());
         Operation savedOperation = operationRepository.save(entity);
@@ -50,13 +55,26 @@ public class OperationServiceImpl implements OperationService {
     }
 
     @Override
-    public Page<OperationDto> findAllOperationsByUserId(Pageable pageable, Long id) {
-        return null;
+    public Page<OperationDto> findAllOperationsByUserEmail(Pageable pageable, String email) {
+        User user = userRepository.findUserByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException("USER_NOT_FOUND_ERROR"));
+        List<OperationDto> operationDtoList = operationRepository.findAllByUserId(user.getId(),pageable)
+                .stream()
+                .map(operationMapper::toDto)
+                .collect(Collectors.toList());
+        return new PageImpl<>(operationDtoList, pageable, operationRepository.count());
     }
 
     @Override
-    public Page<OperationDto> findAllOperationsByBusinessOwnerId(Pageable pageable, Long id) {
-        return null;
+    public Page<OperationDto> findAllOperationsByOrgRepresentativeId(Pageable pageable, Long id) {
+
+        OrgRepresentative orgRepresentative = orgRepresentativeRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("USER_NOT_FOUND_ERROR"));
+        List<OperationDto> operationDtoList = operationRepository.findAllByOrgRepresentativeId(orgRepresentative.getId(),pageable)
+                .stream()
+                .map(operationMapper::toDto)
+                .collect(Collectors.toList());
+        return new PageImpl<>(operationDtoList, pageable, operationRepository.count());
     }
 
     @Override
@@ -93,6 +111,16 @@ public class OperationServiceImpl implements OperationService {
         operationRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("CLIENT_NOT_FOUND_ERROR"));
         operationRepository.deleteById(id);
+    }
+
+    @Override
+    public boolean existsByUserId(Long id) {
+        return operationRepository.existsByUserId(id);
+    }
+
+    @Override
+    public boolean existsByOrgRepresentativeId(Long id) {
+        return operationRepository.existsByOrgRepresentativeId(id);
     }
 
 
