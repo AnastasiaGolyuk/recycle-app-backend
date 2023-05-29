@@ -57,6 +57,8 @@ public class SecurityConfig {
                 .antMatchers("/api/v1/operations/**").permitAll()
                 .antMatchers("/api/v1/org-recyclables/**").permitAll()
                 .antMatchers("/api/v1/org-representatives/**").permitAll()
+                .antMatchers("/api/v1/news/**").permitAll()
+
                 .anyRequest()
                 .authenticated()
                 .and()
