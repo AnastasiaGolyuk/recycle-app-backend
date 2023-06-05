@@ -1,6 +1,7 @@
 package com.bsuir.diploma.recycleappbackend.controller;
 
 import com.bsuir.diploma.recycleappbackend.model.dto.UserDto;
+import com.bsuir.diploma.recycleappbackend.model.entity.Role;
 import com.bsuir.diploma.recycleappbackend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,6 +30,13 @@ public class UserController {
                                    @RequestParam(name = "size", defaultValue = "10") Integer size) {
         Page<UserDto> userPage = userService.findAllUsers(PageRequest.of(page, size));
         return new ArrayList<>(userPage.getContent());
+    }
+
+    @GetMapping("/all")
+    public List<UserDto> findAllList() {
+        List<UserDto> userPage = userService.findAllUsersList();
+        return userPage.stream()
+                .filter(user -> user.getRole().equals(Role.USER)).collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")

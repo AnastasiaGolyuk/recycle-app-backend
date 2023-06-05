@@ -59,7 +59,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             authenticationManager.authenticate(authenticationToken);
         } catch (AuthenticationException ex) {
             System.out.println(ex);
-            throw new UnauthorizedException("Invalid email/password combination");
+            throw new UnauthorizedException(ex.getMessage());
         }
     }
 

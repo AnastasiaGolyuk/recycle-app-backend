@@ -26,7 +26,6 @@ public class NewsController {
     public List<NewsDto> findAll(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                  @RequestParam(name = "size", defaultValue = "10") Integer size) {
         Page<NewsDto> newsPage = newsService.findAllNews(PageRequest.of(page, size));
-        System.out.println(page);
         return new ArrayList<>(newsPage.getContent());
     }
 
@@ -38,8 +37,16 @@ public class NewsController {
     @GetMapping("/date/{date}")
     public List<NewsDto> findNewsByDateAfter(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                              @RequestParam(name = "size", defaultValue = "10") Integer size,
-                                             @PathVariable LocalDate date) {
+                                              @PathVariable LocalDate date) {
         Page<NewsDto> newsPage = newsService.findAllNewsByDateAfter(PageRequest.of(page, size),date);
+        return new ArrayList<>(newsPage.getContent());
+    }
+
+    @GetMapping("/source/{source}")
+    public List<NewsDto> findNewsBySource(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                             @RequestParam(name = "size", defaultValue = "10") Integer size,
+                                             @PathVariable String source) {
+        Page<NewsDto> newsPage = newsService.findAllNewsBySource(PageRequest.of(page, size),source);
         return new ArrayList<>(newsPage.getContent());
     }
 
@@ -52,6 +59,11 @@ public class NewsController {
     @GetMapping("/count")
     public Long getNewsCount() {
         return newsService.getNewsCount();
+    }
+
+    @GetMapping("/count-source")
+    public Long getNewsCountBySource(String source) {
+        return newsService.getNewsCountBySource(source);
     }
 
     @DeleteMapping("/{id}")

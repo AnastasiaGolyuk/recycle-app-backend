@@ -1,6 +1,8 @@
 package com.bsuir.diploma.recycleappbackend.controller;
 
 import com.bsuir.diploma.recycleappbackend.model.dto.OrgNameDto;
+import com.bsuir.diploma.recycleappbackend.model.dto.OrgNameDto;
+import com.bsuir.diploma.recycleappbackend.model.entity.Role;
 import com.bsuir.diploma.recycleappbackend.service.OrgNameService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,6 +22,7 @@ public class OrgNameController {
 
     @PostMapping
     public OrgNameDto save(@RequestBody OrgNameDto orgNameDto) {
+        System.out.println(orgNameDto.getName());
         return orgNameService.saveOrgName(orgNameDto);
     }
 
@@ -27,6 +31,12 @@ public class OrgNameController {
                                  @RequestParam(name = "size", defaultValue = "10") Integer size) {
         Page<OrgNameDto> orgNamePage = orgNameService.findAllOrgNames(PageRequest.of(page, size));
         return new ArrayList<>(orgNamePage.getContent());
+    }
+
+    @GetMapping("/all")
+    public List<OrgNameDto> findAllList() {
+        List<OrgNameDto> orgNamePage = orgNameService.findAllOrgNamesList();
+        return new ArrayList<>(orgNamePage);
     }
 
     @GetMapping("/{id}")

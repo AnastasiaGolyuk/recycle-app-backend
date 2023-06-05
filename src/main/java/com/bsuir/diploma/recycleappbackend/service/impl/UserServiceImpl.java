@@ -3,6 +3,7 @@ package com.bsuir.diploma.recycleappbackend.service.impl;
 import com.bsuir.diploma.recycleappbackend.exception.EntityNotFoundException;
 import com.bsuir.diploma.recycleappbackend.exception.ValidationException;
 import com.bsuir.diploma.recycleappbackend.model.dto.UserDto;
+import com.bsuir.diploma.recycleappbackend.model.entity.Role;
 import com.bsuir.diploma.recycleappbackend.model.entity.User;
 import com.bsuir.diploma.recycleappbackend.model.mapper.UserMapper;
 import com.bsuir.diploma.recycleappbackend.repository.UserRepository;
@@ -61,9 +62,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<UserDto> findAllUsersList() {
+        return userRepository.findAll()
+                .stream()
+                .map(userMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public Long getUsersCount() {
         return userRepository.count();
     }
+
+//    @Override
+//    public Long getUsersCountByRole(String role) {
+//        return userRepository.countAllByRoleEquals(Role);
+//    }
 
     @Transactional
     @Override

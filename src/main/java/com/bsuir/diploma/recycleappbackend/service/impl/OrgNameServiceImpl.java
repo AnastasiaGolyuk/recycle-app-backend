@@ -84,4 +84,13 @@ public class OrgNameServiceImpl implements OrgNameService {
         orgNameRepository.deleteById(id);
     }
 
+    @Override
+    public List<OrgNameDto> findAllOrgNamesList() {
+        return orgNameRepository.findAll()
+                .stream()
+                .map(orgNameMapper::toDto)
+                .collect(Collectors.toList());
+
+    }
+
 }

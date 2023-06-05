@@ -16,5 +16,5 @@ public class OfferDto {
 
     private String description;
 
-    private Double value_bonuses;
+    private Double valueBonuses;
 }

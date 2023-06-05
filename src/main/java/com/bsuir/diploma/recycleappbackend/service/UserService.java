@@ -5,6 +5,7 @@ import com.bsuir.diploma.recycleappbackend.model.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
@@ -19,7 +20,11 @@ public interface UserService {
 
     Page<UserDto> findAllUsers(Pageable pageable);
 
+    List<UserDto> findAllUsersList();
+
     Long getUsersCount();
+
+//    Long getUsersCountByRole(String role);
 
     UserDto updateUser(UserDto clientDto);
 

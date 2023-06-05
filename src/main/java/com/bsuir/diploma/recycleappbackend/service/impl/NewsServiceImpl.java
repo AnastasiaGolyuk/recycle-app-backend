@@ -58,6 +58,15 @@ public class NewsServiceImpl implements NewsService {
 
     }
 
+    @Override
+    public Page<NewsDto> findAllNewsBySource(Pageable pageable, String source) {
+        List<NewsDto> newsDtoList = newsRepository.findAllBySource(pageable,source)
+                .stream()
+                .map(newsMapper::toDto)
+                .collect(Collectors.toList());
+        return new PageImpl<>(newsDtoList, pageable, newsRepository.count());
+    }
+
 
     @Transactional
     @Override
@@ -80,6 +89,11 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public Long getNewsCount() {
         return newsRepository.count();
+    }
+
+    @Override
+    public Long getNewsCountBySource(String source) {
+        return newsRepository.countAllBySource(source);
     }
 
 }

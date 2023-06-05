@@ -1,5 +1,6 @@
 package com.bsuir.diploma.recycleappbackend.repository;
 
+import com.bsuir.diploma.recycleappbackend.model.entity.Role;
 import com.bsuir.diploma.recycleappbackend.model.entity.Status;
 import com.bsuir.diploma.recycleappbackend.model.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -48,5 +49,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Modifying
     @Query("UPDATE User u SET u.status = :status WHERE u.id = :id")
     void updateStatusById(Long id, Status status);
+
+//    int countAllByRoleEquals(Role role);
 
 }

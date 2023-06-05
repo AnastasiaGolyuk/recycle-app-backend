@@ -16,9 +16,13 @@ public interface NewsService {
 
     Page<NewsDto> findAllNewsByDateAfter(Pageable pageable, LocalDate date);
 
+    Page<NewsDto> findAllNewsBySource(Pageable pageable, String source);
+
     NewsDto updateNews(NewsDto newsDto);
 
     void deleteNewsById(Long id);
 
     Long getNewsCount();
+
+    Long getNewsCountBySource(String source);
 }

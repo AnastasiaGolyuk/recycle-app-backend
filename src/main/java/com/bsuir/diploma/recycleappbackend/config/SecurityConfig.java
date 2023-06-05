@@ -55,10 +55,11 @@ public class SecurityConfig {
                 .antMatchers("/api/v1/recycle-symbol-types/**").permitAll()
                 .antMatchers("/api/v1/bonuses/**").permitAll()
                 .antMatchers("/api/v1/operations/**").permitAll()
+                .antMatchers("/api/v1/organizations/**").permitAll()
                 .antMatchers("/api/v1/org-recyclables/**").permitAll()
                 .antMatchers("/api/v1/org-representatives/**").permitAll()
                 .antMatchers("/api/v1/news/**").permitAll()
-
+                .antMatchers("/api/v1/offers/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
