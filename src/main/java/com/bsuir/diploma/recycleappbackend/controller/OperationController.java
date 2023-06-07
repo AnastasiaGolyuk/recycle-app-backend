@@ -1,12 +1,16 @@
 package com.bsuir.diploma.recycleappbackend.controller;
 
 import com.bsuir.diploma.recycleappbackend.model.dto.OperationDto;
+import com.bsuir.diploma.recycleappbackend.model.dto.OrgRepresentativeDto;
 import com.bsuir.diploma.recycleappbackend.service.OperationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +31,12 @@ public class OperationController {
                                       @RequestParam(name = "size", defaultValue = "10") Integer size) {
         Page<OperationDto> operationPage = operationService.findAllOperations(PageRequest.of(page, size));
         return new ArrayList<>(operationPage.getContent());
+    }
+
+    @GetMapping("/all")
+    public List<OperationDto> findAllList() {
+        List<OperationDto> operationPage = operationService.findAllOperationList();
+        return new ArrayList<>(operationPage);
     }
 
     @GetMapping("/{id}")
@@ -50,6 +60,24 @@ public class OperationController {
         return new ArrayList<>(operationPage.getContent());
     }
 
+    @GetMapping("/org-representative-date/{id}")
+    public List<OperationDto> findAllByOrgRepresentativeIdAndDate(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                           @RequestParam(name = "size", defaultValue = "10") Integer size,
+                                                           @PathVariable Long id,
+                                                                  @RequestParam(name = "date_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateTime) {
+        Page<OperationDto> operationPage = operationService.findAllOperationsByOrgRepresentativeIdAndDate(PageRequest.of(page, size), id,dateTime);
+        return new ArrayList<>(operationPage.getContent());
+    }
+
+    @GetMapping("/users-date/{email}")
+    public List<OperationDto> findAllByUserEmailAndDate(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                 @RequestParam(name = "size", defaultValue = "10") Integer size,
+                                                 @PathVariable String email,
+                                                        @RequestParam(name = "date_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateTime) {
+        Page<OperationDto> operationPage = operationService.findAllOperationsByUserEmailAndDate(PageRequest.of(page, size), email,dateTime);
+        return new ArrayList<>(operationPage.getContent());
+    }
+
     @GetMapping("/exist-by-users/{id}")
     public boolean existByUserId(@PathVariable Long id) {
         return operationService.existsByUserId(id);
@@ -68,6 +96,29 @@ public class OperationController {
     @GetMapping("/count")
     public Long getOperationsCount() {
         return operationService.getOperationsCount();
+    }
+
+    @GetMapping("/user/{id}/count")
+    public Long getOperationsCountByUserId(@PathVariable Long id) {
+        return operationService.getOperationsCountByUserId(id);
+    }
+
+    @GetMapping("/org-rep/{id}/count")
+    public Long getOperationsCountByOrgRepId(@PathVariable Long id) {
+        return operationService.getOperationsCountByOrgRepresentativeId(id);
+    }
+
+    @GetMapping("/org-rep-date/{id}/count")
+    public Long getOperationsCountByOrgRepIdAndDate(@PathVariable Long id,
+                                                    @RequestParam(name = "date_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateTime) {
+        return operationService.getOperationsCountByOrgRepresentativeIdAndDate(id,dateTime);
+    }
+
+    @GetMapping("/user-date/{id}/count")
+    public Long getOperationsCountByUserIdAndDate(@PathVariable Long id,
+                                                    @RequestParam(name = "date_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateTime) {
+        System.out.println(dateTime);
+        return operationService.getOperationsCountByUserIdAndDate(id,dateTime);
     }
 
     @DeleteMapping("/{id}")

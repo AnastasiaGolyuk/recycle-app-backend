@@ -13,6 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -28,7 +29,7 @@ public class JwtTokenFilter extends GenericFilterBean {
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
 
         try {
-            if (Objects.nonNull(token) && jwtTokenProvider.validateToken(token)) {
+            if (Objects.nonNull(token) && jwtTokenProvider.validateToken(token, response)) {
                 Authentication authentication = jwtTokenProvider.getAuthentication(token);
                 if (Objects.nonNull(authentication)) {
                     SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -36,6 +37,10 @@ public class JwtTokenFilter extends GenericFilterBean {
                     request.setAttribute(AttributeName.AUTHORITIES, authentication.getAuthorities());
                 }
             }
+//            else if (Objects.nonNull(token)) {
+//                System.out.println("yes "+token);
+//                ((HttpServletResponse) response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//            }
         } catch (AuthenticationException e) {
             SecurityContextHolder.clearContext();
         }

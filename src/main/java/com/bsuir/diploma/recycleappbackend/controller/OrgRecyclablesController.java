@@ -60,4 +60,9 @@ public class OrgRecyclablesController {
     public Long getOrgRecyclablesCount() {
         return orgRecyclablesService.getOrgRecyclablesCount();
     }
+
+    @GetMapping("/{orgName}/count")
+    public Long getOrgRecyclablesCount(@PathVariable String orgName) {
+        return orgRecyclablesService.getOrgRecyclablesCountByOrgName(orgName);
+    }
 }

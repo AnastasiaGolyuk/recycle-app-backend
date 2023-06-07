@@ -58,7 +58,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         try {
             authenticationManager.authenticate(authenticationToken);
         } catch (AuthenticationException ex) {
-            System.out.println(ex);
+            System.out.println(ex.getMessage());
             throw new UnauthorizedException(ex.getMessage());
         }
     }

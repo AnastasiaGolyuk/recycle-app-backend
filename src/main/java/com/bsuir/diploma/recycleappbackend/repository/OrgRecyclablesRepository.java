@@ -16,4 +16,6 @@ public interface OrgRecyclablesRepository extends JpaRepository<OrgRecyclables, 
     Page<OrgRecyclables> findOrgRecyclablesByOrgName_Name(String orgName, Pageable pageable);
 
     Optional<OrgRecyclables> findOrgRecyclablesByType(String type);
+
+    Long countAllByOrgName_Name(String name);
 }

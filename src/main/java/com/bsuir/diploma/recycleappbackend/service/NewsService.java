@@ -16,6 +16,8 @@ public interface NewsService {
 
     Page<NewsDto> findAllNewsByDateAfter(Pageable pageable, LocalDate date);
 
+    Page<NewsDto> findAllByKeyWord(Pageable pageable, String keyword);
+
     Page<NewsDto> findAllNewsBySource(Pageable pageable, String source);
 
     NewsDto updateNews(NewsDto newsDto);
@@ -24,5 +26,9 @@ public interface NewsService {
 
     Long getNewsCount();
 
+    Long getNewsCountByKeyWord(String keyword);
+
     Long getNewsCountBySource(String source);
+
+    Long getNewsCountByDateAfter(LocalDate date);
 }

@@ -79,6 +79,14 @@ public class OrgRepresentativeServiceImpl implements OrgRepresentativeService {
     }
 
     @Override
+    public List<OrgRepresentativeDto> findAllOrgRepresentativeList() {
+        return orgRepresentativeRepository.findAll()
+                .stream()
+                .map(orgRepresentativeMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public Long getOrgRepresentativesCount() {
         return orgRepresentativeRepository.count();
     }

@@ -5,6 +5,7 @@ import com.bsuir.diploma.recycleappbackend.service.NewsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -37,7 +38,7 @@ public class NewsController {
     @GetMapping("/date/{date}")
     public List<NewsDto> findNewsByDateAfter(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                              @RequestParam(name = "size", defaultValue = "10") Integer size,
-                                              @PathVariable LocalDate date) {
+                                              @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         Page<NewsDto> newsPage = newsService.findAllNewsByDateAfter(PageRequest.of(page, size),date);
         return new ArrayList<>(newsPage.getContent());
     }
@@ -47,6 +48,14 @@ public class NewsController {
                                              @RequestParam(name = "size", defaultValue = "10") Integer size,
                                              @PathVariable String source) {
         Page<NewsDto> newsPage = newsService.findAllNewsBySource(PageRequest.of(page, size),source);
+        return new ArrayList<>(newsPage.getContent());
+    }
+
+    @GetMapping("/keyword/{keyword}")
+    public List<NewsDto> findNewsByKeyword(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                          @RequestParam(name = "size", defaultValue = "10") Integer size,
+                                          @PathVariable String keyword) {
+        Page<NewsDto> newsPage = newsService.findAllByKeyWord(PageRequest.of(page, size),keyword);
         return new ArrayList<>(newsPage.getContent());
     }
 
@@ -62,9 +71,20 @@ public class NewsController {
     }
 
     @GetMapping("/count-source")
-    public Long getNewsCountBySource(String source) {
+    public Long getNewsCountBySource(@RequestParam(name = "source") String source) {
         return newsService.getNewsCountBySource(source);
     }
+
+    @GetMapping("/count-date")
+    public Long getNewsCountByDate(@RequestParam(name = "date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        return newsService.getNewsCountByDateAfter(date);
+    }
+
+    @GetMapping("/count-keyword")
+    public Long getNewsCountByKeyword(@RequestParam(name = "keyword") String keyword) {
+        return newsService.getNewsCountByKeyWord(keyword);
+    }
+
 
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable Long id) {

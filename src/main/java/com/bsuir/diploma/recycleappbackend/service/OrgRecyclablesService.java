@@ -18,6 +18,8 @@ public interface OrgRecyclablesService {
 
     Long getOrgRecyclablesCount();
 
+    Long getOrgRecyclablesCountByOrgName(String name);
+
     OrgRecyclablesDto updateOrgRecyclables(OrgRecyclablesDto orgRecyclablesDto);
 
     void deleteOrgRecyclablesById(Long id);

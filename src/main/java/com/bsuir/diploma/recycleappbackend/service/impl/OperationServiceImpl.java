@@ -3,10 +3,8 @@ package com.bsuir.diploma.recycleappbackend.service.impl;
 import com.bsuir.diploma.recycleappbackend.exception.EntityNotFoundException;
 import com.bsuir.diploma.recycleappbackend.model.dto.OperationDto;
 import com.bsuir.diploma.recycleappbackend.model.dto.OperationPrepareDto;
-import com.bsuir.diploma.recycleappbackend.model.dto.RecycleSymbolDto;
 import com.bsuir.diploma.recycleappbackend.model.entity.OrgRepresentative;
 import com.bsuir.diploma.recycleappbackend.model.entity.Operation;
-import com.bsuir.diploma.recycleappbackend.model.entity.RecycleSymbolType;
 import com.bsuir.diploma.recycleappbackend.model.entity.User;
 import com.bsuir.diploma.recycleappbackend.model.mapper.OperationMapper;
 import com.bsuir.diploma.recycleappbackend.repository.OrgRepresentativeRepository;
@@ -62,19 +60,42 @@ public class OperationServiceImpl implements OperationService {
                 .stream()
                 .map(operationMapper::toDto)
                 .collect(Collectors.toList());
-        return new PageImpl<>(operationDtoList, pageable, operationRepository.count());
+        return new PageImpl<>(operationDtoList, pageable, operationRepository.countAllByUserId(user.getId()));
     }
 
     @Override
     public Page<OperationDto> findAllOperationsByOrgRepresentativeId(Pageable pageable, Long id) {
-
         OrgRepresentative orgRepresentative = orgRepresentativeRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("USER_NOT_FOUND_ERROR"));
         List<OperationDto> operationDtoList = operationRepository.findAllByOrgRepresentativeId(orgRepresentative.getId(),pageable)
                 .stream()
                 .map(operationMapper::toDto)
                 .collect(Collectors.toList());
-        return new PageImpl<>(operationDtoList, pageable, operationRepository.count());
+                return new PageImpl<>(operationDtoList, pageable, operationRepository.countAllByOrgRepresentativeId(orgRepresentative.getId()));
+    }
+
+    @Override
+    public Page<OperationDto> findAllOperationsByUserEmailAndDate(Pageable pageable, String email, LocalDateTime dateTime) {
+        User user = userRepository.findUserByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException("USER_NOT_FOUND_ERROR"));
+        List<OperationDto> operationDtoList = operationRepository.findAllByUserIdAndDateTimeAfter(pageable,dateTime,user.getId())
+                .stream()
+                .map(operationMapper::toDto)
+                .collect(Collectors.toList());
+        return new PageImpl<>(operationDtoList, pageable, operationRepository.countAllByUserIdAndDateTimeAfter(user.getId(),dateTime));
+
+    }
+
+    @Override
+    public Page<OperationDto> findAllOperationsByOrgRepresentativeIdAndDate(Pageable pageable, Long id, LocalDateTime dateTime) {
+        OrgRepresentative orgRepresentative = orgRepresentativeRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("USER_NOT_FOUND_ERROR"));
+        List<OperationDto> operationDtoList = operationRepository.findAllByOrgRepresentativeIdAndDateTimeAfter(pageable,dateTime,orgRepresentative.getId())
+                .stream()
+                .map(operationMapper::toDto)
+                .collect(Collectors.toList());
+        return new PageImpl<>(operationDtoList, pageable, operationRepository.countAllByOrgRepresentativeIdAndDateTimeAfter(orgRepresentative.getId(),dateTime));
+
     }
 
     @Override
@@ -84,6 +105,14 @@ public class OperationServiceImpl implements OperationService {
                 .map(operationMapper::toDto)
                 .collect(Collectors.toList());
         return new PageImpl<>(operationDtoList, pageable, operationRepository.count());
+    }
+
+    @Override
+    public List<OperationDto> findAllOperationList() {
+        return operationRepository.findAll()
+                .stream()
+                .map(operationMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -121,6 +150,26 @@ public class OperationServiceImpl implements OperationService {
     @Override
     public boolean existsByOrgRepresentativeId(Long id) {
         return operationRepository.existsByOrgRepresentativeId(id);
+    }
+
+    @Override
+    public Long getOperationsCountByUserId(Long id) {
+        return operationRepository.countAllByUserId(id);
+    }
+
+    @Override
+    public Long getOperationsCountByOrgRepresentativeId(Long id) {
+        return operationRepository.countAllByOrgRepresentativeId(id);
+    }
+
+    @Override
+    public Long getOperationsCountByUserIdAndDate(Long id, LocalDateTime dateTime) {
+        return operationRepository.countAllByUserIdAndDateTimeAfter(id,dateTime);
+    }
+
+    @Override
+    public Long getOperationsCountByOrgRepresentativeIdAndDate(Long id, LocalDateTime dateTime) {
+        return operationRepository.countAllByOrgRepresentativeIdAndDateTimeAfter(id,dateTime);
     }
 
 

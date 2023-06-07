@@ -81,6 +81,12 @@ public class OrgRecyclablesServiceImpl implements OrgRecyclablesService {
         return orgRecyclablesRepository.count();
     }
 
+    @Override
+    public Long getOrgRecyclablesCountByOrgName(String name) {
+        return orgRecyclablesRepository.countAllByOrgName_Name(name);
+    }
+
+
     @Transactional
     @Override
     public OrgRecyclablesDto updateOrgRecyclables(OrgRecyclablesDto orgRecyclablesDto) {

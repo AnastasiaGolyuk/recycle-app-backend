@@ -54,8 +54,17 @@ public class NewsServiceImpl implements NewsService {
                 .stream()
                 .map(newsMapper::toDto)
                 .collect(Collectors.toList());
-        return new PageImpl<>(newsDtoList, pageable, newsRepository.count());
+        return new PageImpl<>(newsDtoList, pageable, newsRepository.countAllByDateAfter(date));
 
+    }
+
+    @Override
+    public Page<NewsDto> findAllByKeyWord(Pageable pageable, String keyword) {
+        List<NewsDto> newsDtoList = newsRepository.findAllByTitleContainsIgnoreCaseOrSubjectContainsIgnoreCase(pageable, keyword)
+                .stream()
+                .map(newsMapper::toDto)
+                .collect(Collectors.toList());
+        return new PageImpl<>(newsDtoList, pageable, newsRepository.countAllBySubjectContainsIgnoreCaseOrTitleContainsIgnoreCase(keyword));
     }
 
     @Override
@@ -64,7 +73,7 @@ public class NewsServiceImpl implements NewsService {
                 .stream()
                 .map(newsMapper::toDto)
                 .collect(Collectors.toList());
-        return new PageImpl<>(newsDtoList, pageable, newsRepository.count());
+        return new PageImpl<>(newsDtoList, pageable, newsRepository.countAllBySource(source));
     }
 
 
@@ -92,8 +101,18 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
+    public Long getNewsCountByKeyWord(String keyword) {
+        return newsRepository.countAllBySubjectContainsIgnoreCaseOrTitleContainsIgnoreCase(keyword);
+    }
+
+    @Override
     public Long getNewsCountBySource(String source) {
         return newsRepository.countAllBySource(source);
+    }
+
+    @Override
+    public Long getNewsCountByDateAfter(LocalDate date) {
+        return newsRepository.countAllByDateAfter(date);
     }
 
 }
