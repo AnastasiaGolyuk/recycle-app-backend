@@ -25,12 +25,6 @@ public class RecycleSymbolController {
         return new ArrayList<>(recycleSymbolPage.getContent());
     }
 
-
-//    @GetMapping("/name/{name}")
-//    public RecycleSymbolDto findRecycleSymbolByName(@PathVariable String name) {
-//        return recycleSymbolService.findRecycleSymbolByName(name);
-//    }
-
     @GetMapping("/name/{name}")
     public List<RecycleSymbolDto> findRecycleSymbolsByTypeName(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                           @RequestParam(name = "size", defaultValue = "10") Integer size,
@@ -39,9 +33,27 @@ public class RecycleSymbolController {
         return new ArrayList<>(recycleSymbolPage.getContent());
     }
 
+    @GetMapping("/keyword/{keyword}")
+    public List<RecycleSymbolDto> findRecycleSymbolsByKeyword(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                               @RequestParam(name = "size", defaultValue = "10") Integer size,
+                                                               @PathVariable String keyword) {
+        Page<RecycleSymbolDto> recycleSymbolPage = recycleSymbolService.findRecycleSymbolsByKeyword(keyword,PageRequest.of(page, size));
+        return new ArrayList<>(recycleSymbolPage.getContent());
+    }
+
     @GetMapping("/count")
     public Long getRecycleSymbolsCount() {
         return recycleSymbolService.getRecycleSymbolsCount();
+    }
+
+    @GetMapping("/count-keyword/{keyword}")
+    public Long getRecycleSymbolsCountByKeyword(@PathVariable String keyword) {
+        return recycleSymbolService.getRecycleSymbolsCountByKeyword(keyword);
+    }
+
+    @GetMapping("/count-name/{name}")
+    public Long getRecycleSymbolsCountByTypeName(@PathVariable String name) {
+        return recycleSymbolService.getRecycleSymbolsCountByTypeName(name);
     }
 }
 

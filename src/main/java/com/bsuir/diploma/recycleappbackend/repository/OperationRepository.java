@@ -6,6 +6,7 @@ import com.bsuir.diploma.recycleappbackend.model.entity.Operation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.DateTimeException;
@@ -20,9 +21,11 @@ public interface OperationRepository extends JpaRepository<Operation, Long> {
 
     Page<Operation> findAllByUserId(Long id, Pageable pageable);
 
+    @Query("select operations from Operation operations where operations.dateTime >= :date and operations.orgRepresentative.id = :orgRepId")
     Page<Operation> findAllByOrgRepresentativeIdAndDateTimeAfter
             (Pageable pageable, LocalDateTime date, Long orgRepId);
 
+    @Query("select operations from Operation operations where operations.dateTime >= :date and operations.user.id = :userId")
     Page<Operation> findAllByUserIdAndDateTimeAfter
             (Pageable pageable, LocalDateTime date, Long userId);
 
@@ -34,7 +37,9 @@ public interface OperationRepository extends JpaRepository<Operation, Long> {
 
     Long countAllByOrgRepresentativeId(Long id);
 
+    @Query("select count(operations) from Operation operations where operations.dateTime >= :dateTime and operations.user.id = :id")
     Long countAllByUserIdAndDateTimeAfter(Long id, LocalDateTime dateTime);
 
+    @Query("select count(operations) from Operation operations where operations.dateTime >= :dateTime and operations.orgRepresentative.id = :id")
     Long countAllByOrgRepresentativeIdAndDateTimeAfter(Long id, LocalDateTime dateTime);
 }

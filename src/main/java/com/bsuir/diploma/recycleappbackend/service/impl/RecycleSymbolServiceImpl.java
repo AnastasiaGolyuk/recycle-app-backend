@@ -57,5 +57,24 @@ public class RecycleSymbolServiceImpl implements RecycleSymbolService {
     public Long getRecycleSymbolsCount() {
         return recycleSymbolRepository.count();
     }
+
+    @Override
+    public Long getRecycleSymbolsCountByTypeName(String name) {
+        return recycleSymbolRepository.countAllByRecycleSymbolTypeName(name);
+    }
+
+    @Override
+    public Page<RecycleSymbolDto> findRecycleSymbolsByKeyword(String keyword, Pageable pageable) {
+        List<RecycleSymbolDto> recycleSymbolDtoList = recycleSymbolRepository.findAllByNameContainsIgnoreCaseOrDescriptionContainsIgnoreCase(pageable,keyword)
+                .stream()
+                .map(recycleSymbolMapper::toDto)
+                .collect(Collectors.toList());
+        return new PageImpl<>(recycleSymbolDtoList, pageable, recycleSymbolRepository.countAllByNameContainsIgnoreCaseOrDescriptionContainsIgnoreCase(keyword));
+    }
+
+    @Override
+    public Long getRecycleSymbolsCountByKeyword(String keyword) {
+        return recycleSymbolRepository.countAllByNameContainsIgnoreCaseOrDescriptionContainsIgnoreCase(keyword);
+    }
 }
 

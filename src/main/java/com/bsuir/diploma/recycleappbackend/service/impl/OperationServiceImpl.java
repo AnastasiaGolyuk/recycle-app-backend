@@ -76,6 +76,7 @@ public class OperationServiceImpl implements OperationService {
 
     @Override
     public Page<OperationDto> findAllOperationsByUserEmailAndDate(Pageable pageable, String email, LocalDateTime dateTime) {
+
         User user = userRepository.findUserByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException("USER_NOT_FOUND_ERROR"));
         List<OperationDto> operationDtoList = operationRepository.findAllByUserIdAndDateTimeAfter(pageable,dateTime,user.getId())

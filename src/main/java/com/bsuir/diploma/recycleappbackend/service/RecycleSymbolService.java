@@ -14,4 +14,10 @@ public interface RecycleSymbolService {
     Page<RecycleSymbolDto> findRecycleSymbolsByTypeName(String typeName, Pageable pageable);
 
     Long getRecycleSymbolsCount();
+
+    Long getRecycleSymbolsCountByTypeName(String name);
+
+    Page<RecycleSymbolDto> findRecycleSymbolsByKeyword(String keyword, Pageable pageable);
+
+    Long getRecycleSymbolsCountByKeyword(String keyword);
 }
