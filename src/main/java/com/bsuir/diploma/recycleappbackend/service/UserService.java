@@ -24,7 +24,9 @@ public interface UserService {
 
     Long getUsersCount();
 
-//    Long getUsersCountByRole(String role);
+    Page<UserDto> findAllUsersByRole(Pageable pageable, String role);
+
+    Long getUsersCountByRole(String role);
 
     UserDto updateUser(UserDto clientDto);
 

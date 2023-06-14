@@ -50,7 +50,7 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public Page<NewsDto> findAllNewsByDateAfter(Pageable pageable, LocalDate date) {
-        List<NewsDto> newsDtoList = newsRepository.findAllByDateAfter(pageable, date)
+        List<NewsDto> newsDtoList = newsRepository.findAllByDateAfterOrderByDateDesc(pageable, date)
                 .stream()
                 .map(newsMapper::toDto)
                 .collect(Collectors.toList());
@@ -69,7 +69,7 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public Page<NewsDto> findAllNewsBySource(Pageable pageable, String source) {
-        List<NewsDto> newsDtoList = newsRepository.findAllBySource(pageable,source)
+        List<NewsDto> newsDtoList = newsRepository.findAllBySourceOrderByDateDesc(pageable,source)
                 .stream()
                 .map(newsMapper::toDto)
                 .collect(Collectors.toList());

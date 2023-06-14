@@ -18,17 +18,18 @@ import java.util.Optional;
 @Repository
 public interface OperationRepository extends JpaRepository<Operation, Long> {
     boolean existsByUserId(Long userId);
-
+    @Query("select operations from Operation operations where operations.user.id = :id order by operations.dateTime desc")
     Page<Operation> findAllByUserId(Long id, Pageable pageable);
 
-    @Query("select operations from Operation operations where operations.dateTime >= :date and operations.orgRepresentative.id = :orgRepId")
+    @Query("select operations from Operation operations where operations.dateTime >= :date and operations.orgRepresentative.id = :orgRepId order by operations.dateTime desc")
     Page<Operation> findAllByOrgRepresentativeIdAndDateTimeAfter
             (Pageable pageable, LocalDateTime date, Long orgRepId);
 
-    @Query("select operations from Operation operations where operations.dateTime >= :date and operations.user.id = :userId")
+    @Query("select operations from Operation operations where operations.dateTime >= :date and operations.user.id = :userId order by operations.dateTime desc")
     Page<Operation> findAllByUserIdAndDateTimeAfter
             (Pageable pageable, LocalDateTime date, Long userId);
 
+    @Query("select operations from Operation operations where operations.orgRepresentative.id = :id order by operations.dateTime desc")
     Page<Operation> findAllByOrgRepresentativeId(Long id, Pageable pageable);
 
     boolean existsByOrgRepresentativeId(Long id);
@@ -42,4 +43,7 @@ public interface OperationRepository extends JpaRepository<Operation, Long> {
 
     @Query("select count(operations) from Operation operations where operations.dateTime >= :dateTime and operations.orgRepresentative.id = :id")
     Long countAllByOrgRepresentativeIdAndDateTimeAfter(Long id, LocalDateTime dateTime);
+
+    @Query("select operations from Operation operations order by operations.dateTime desc")
+    Page<Operation> findAll(Pageable pageable);
 }

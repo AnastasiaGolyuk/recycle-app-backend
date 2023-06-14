@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -72,6 +73,32 @@ public class UserServiceImpl implements UserService {
     @Override
     public Long getUsersCount() {
         return userRepository.count();
+    }
+
+    @Override
+    public Page<UserDto> findAllUsersByRole(Pageable pageable, String role) {
+        Role newRole = Role.USER;
+        if (Objects.equals(role, "ORG_REPRESENTATIVE")){
+            newRole=Role.ORG_REPRESENTATIVE;
+        } else if (Objects.equals(role,"ADMIN")) {
+            newRole=Role.ADMIN;
+        }
+        List<UserDto> userDtoList = userRepository.findAllByRole(pageable,newRole)
+                .stream()
+                .map(userMapper::toDto)
+                .collect(Collectors.toList());
+        return new PageImpl<>(userDtoList, pageable, userRepository.countAllByRoleEquals(newRole));
+    }
+
+    @Override
+    public Long getUsersCountByRole(String role) {
+        Role newRole = Role.USER;
+        if (Objects.equals(role, "ORG_REPRESENTATIVE")){
+            newRole=Role.ORG_REPRESENTATIVE;
+        } else if (Objects.equals(role,"ADMIN")) {
+            newRole=Role.ADMIN;
+        }
+        return userRepository.countAllByRoleEquals(newRole);
     }
 
 //    @Override

@@ -39,6 +39,13 @@ public class UserController {
                 .filter(user -> user.getRole().equals(Role.USER)).collect(Collectors.toList());
     }
 
+    @GetMapping("/find-all/{role}")
+    public List<UserDto> findAllByRole(@PathVariable String role, @RequestParam(name = "page", defaultValue = "0") Integer page,
+                                       @RequestParam(name = "size", defaultValue = "10") Integer size) {
+        Page<UserDto> userPage = userService.findAllUsersByRole(PageRequest.of(page, size),role);
+        return new ArrayList<>(userPage.getContent());
+    }
+
     @GetMapping("/{id}")
     public UserDto findById(@PathVariable Long id) {
         return userService.findUserById(id);
@@ -62,6 +69,11 @@ public class UserController {
     @GetMapping("/count")
     public Long getUsersCount() {
         return userService.getUsersCount();
+    }
+
+    @GetMapping("/count/{role}")
+    public Long getUsersCount(@PathVariable String role) {
+        return userService.getUsersCountByRole(role);
     }
 
     @DeleteMapping("/{id}")

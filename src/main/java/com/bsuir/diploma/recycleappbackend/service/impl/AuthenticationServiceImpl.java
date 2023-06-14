@@ -51,6 +51,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         UserDto userDto = userService.findUserByEmail(email);
 
         String token = jwtTokenProvider.createToken(email, userDto.getRole());
+
         return new AuthenticationResponse(email, token);
     }
 
@@ -58,7 +59,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         try {
             authenticationManager.authenticate(authenticationToken);
         } catch (AuthenticationException ex) {
-            System.out.println(ex.getMessage());
             throw new UnauthorizedException(ex.getMessage());
         }
     }
